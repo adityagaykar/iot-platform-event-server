@@ -13,7 +13,32 @@ router.get('/', function(req, res, next) {
 	res.render('login', { errorMessage : errorMessage});
 });
 
-/*GET Home page*/
+/* Registration form */
+router.get('/signup', function(req, res, next) {
+	var user = req.session.user;
+	if(user)
+		res.redirect("/home");
+	var errorMessage = req.session.error;
+	res.render('signup', { errorMessage : errorMessage});
+});
+
+
+/*POST:Register form*/
+router.post('/signup',function(req,res, next){
+	var name = req.body.username;
+	var password = sha1(req.body.password);
+
+	User.create({
+		name: name,
+		password: password
+	},function(err,user){
+		if(err)
+			throw err;
+		res.redirect("/");
+	});
+
+});
+/*GET:Home page*/
 
 router.get('/home',function(req,res,next){
 	var user = req.session.user;
@@ -36,11 +61,18 @@ router.get('/home',function(req,res,next){
 	}
 });
 
+/*  */
+router.get('/login', function(req, res, next) {
+	res.redirect("/home");
+});
+
 /* POST: login */
 
 router.post('/login',function(req,res, next){
 	var name = req.body.username;
 	var password = sha1(req.body.password);
+	console.log(name);
+	console.log(password);
 	User.findOne({name:name, password:password},function(err,user){
 		if (err)
 			throw err;
