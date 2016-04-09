@@ -17,7 +17,7 @@ router.post("/v1.0/event",function(req,res,next){
 			console.log("FOR : "+params);
 			result = helper.executeRule(body.sensor_data, params);			
 		}
-	});	
+	});
 	res.send("success");
 });
 

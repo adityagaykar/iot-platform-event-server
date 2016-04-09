@@ -27,21 +27,23 @@ router.post("/", function(req, res, next){
 	var uri = req.body.uri;
 	var app_id = req.body.app_id;
 	//var data = eval("x = "+callback);
-	if(data.length != 0){
-		res.redirect("/callbacks/add/"+app_id);
-	} else {
-		Callback.create({
-			name : name,
-			owner : owner,
-			app_id : app_id,
-			uri : uri,
-			callback : callback,
-		}, function(err, callback){
-			if( err)
-				res.send(err);
-			res.redirect("/callbacks/"+callback.app_id);
-		});	
-	}
+	Callback.find({name: name}, function(err, data){
+		if(data.length != 0){
+			res.redirect("/callbacks/add/"+app_id);
+		} else {
+			Callback.create({
+				name : name,
+				owner : owner,
+				app_id : app_id,
+				uri : uri,
+				callback : callback,
+			}, function(err, callback){
+				if( err)
+					res.send(err);
+				res.redirect("/callbacks/"+callback.app_id);
+			});	
+		}
+	});
 	
 });
 
