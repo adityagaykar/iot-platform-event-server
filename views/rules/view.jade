@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 Rules
+		hr
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Application Id
+					th Condition
+					th Callback
+					th Sensors
+					th  
+					th  
+				- each variable,i in rules
+					tr
+						td #{variable.name}
+						td #{variable.app_id}
+						td #{variable.condition}										
+						td #{variable.callback}										
+						td #{variable.sensors}
+						td
+							a(href="/rules/delete/#{variable._id}") Delete						
+						td
+							a(href="/rules/update/#{variable._id}") Update						
+
+		
+block inPageScript
+	script.
+		
+		

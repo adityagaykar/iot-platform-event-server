@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+	if user		
+		h3 Welcome, #{user.name}	
+	hr
+	div.col-md-2
+		
+		h4 Gateways
+		ul.list-group
+			li.list-group-item
+				a(href="/datasets/add/#{id}") Add
+			li.list-group-item
+				a(href="/datasets/#{id}") View All
+			
+		h4 Rules
+		ul.list-group
+			li.list-group-item
+				a(href="/rules/add/#{id}") Add
+			li.list-group-item
+				a(href="/rules/#{id}") View All
+
+		h4 Callbacks
+		ul.list-group
+			li.list-group-item
+				a(href="/callbacks/add/#{id}") Add
+			li.list-group-item
+				a(href="/callbacks/#{id}") View All
+
+		//		
+			h4 Logic Server
+			ul.list-group
+				li.list-group-item
+					a(href="/logicservers/add/#{id}") Add
+				li.list-group-item
+					a(href="/logicservers/#{id}") View All
+		
+block inPageScript
+	script.
+		

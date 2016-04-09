@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 Logic servers
+		hr
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Owner Id
+					th Application Id
+					th Hostname
+					th Port
+					th  
+
+				- each variable,i in logicservers
+					tr
+						td #{variable.name}
+						td #{variable.owner}
+						td #{variable.app_id}
+						td #{variable.hostname}										
+						td #{variable.port}										
+						td
+							a(href="/logicservers/delete/#{variable._id}") Delete						
+						td
+							a(href="/logicservers/update/#{variable._id}") edit
+
+		
+block inPageScript
+	script.
+		
+		

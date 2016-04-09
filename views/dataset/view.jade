@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 Gateway - Datasets
+		hr
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Owner Id
+					th Application Id
+					th Dataset
+					th  
+				- each variable,i in dataset
+					tr
+						td #{variable.name}
+						td #{variable.owner}
+						td #{variable.app_id}
+						td #{JSON.stringify(variable.dataset)}										
+						td
+							a(href="/datasets/delete/#{variable._id}") Delete
+
+		
+block inPageScript
+	script.
+		
+		

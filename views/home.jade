@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	if user
+		h3 Welcome, #{user.name}	
+	hr
+	div.col-md-4
+		h4 Applications		
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Owner Id
+					th  
+					th  
+				- each variable,i in applications
+					tr
+						td #{variable.name}
+						td #{variable.owner}
+						td
+							a(href="/applications/delete/#{variable._id}") Delete
+						td
+							a(href="/applications/home/#{variable._id}") Edit	
+	div.col-md-2				
+		a.btn.btn-primary(href="/applications/add") Add
+			
+
+
+		
+block inPageScript
+	script.
+		

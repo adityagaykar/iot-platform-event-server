@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+	h3 Rules
+	hr
+	div.col-md-12
+		h4 Add Rule
+		div.col-md-6
+			form(method="POST", action="/rules")
+				div.form-group
+					label(for="name") Name:
+					input.form-control(required="required",type="text", name="name")				
+				div.form-group
+					label(for="rule") Condition: 
+					input.form-control(type="text",name="condition", required="required")
+				div.form-group
+					label(for="rule") Callback: 
+					input.form-control(type="text",name="callback", required="required")
+				div.form-group
+					label(for="name") Sensors:
+					input.form-control(required="required",type="text", name="sensors")				
+					input(type="hidden",name="app_id",value="#{app_id}")
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")
+
+		
+block inPageScript
+	script.
+		

@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 Callbacks
+		hr
+		div.col-md-6
+			table.table
+				tr
+					th Name
+					th Owner Id
+					th Application Id
+					th Callback
+					th Uri
+					th  
+					th  
+				- each variable,i in callbacks
+					tr
+						td #{variable.name}
+						td #{variable.owner}
+						td #{variable.app_id}
+						td #{variable.callback}										
+						td #{variable.uri}										
+						td
+							a(href="/callbacks/delete/#{variable._id}") Delete
+						td
+							a(href="/callbacks/update/#{variable._id}") Update
+
+		
+block inPageScript
+	script.
+		
+		

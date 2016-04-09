@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+	h3 Gateway
+	hr
+	div.col-md-12
+		h4 Add Dataset
+		div.col-md-6
+			form(method="POST", action="/datasets")
+				div.form-group
+					label(for="name") Name:
+					input.form-control(required="required",type="text", name="name")
+				div#dataset.form-group
+				div.form-group
+					label(for="variable") Variable: 
+					input#variable.form-control(name="variable")
+					input(type="hidden" name="app_id" value="#{app_id}")
+				div
+					button#add.btn.btn-success(required="required",onclick="return false") +
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")
+
+		
+block inPageScript
+	script.
+		$(document).ready(function(){
+			var varId = 1;
+			$("#add").click(function(){				
+				var name = $("#variable").val();
+				if (name.trim() == ""){
+					alert("enter a variable");
+					return false;
+				}
+				var tag = '<div id="var'+varId+'"><input readonly="readonly" type="text" name="'+name+'" class="" value="'+name+'"/>';
+				tag += '<button class="btn btn-warning" class="delete" onclick="$(\'#var'+varId+'\').remove();return false;" value="var'+varId+'">-</button></div>'
+				$("#dataset").append(tag);
+				$("#variable").val("");
+				varId++;
+				return false;				
+			});
+
+		});
+		

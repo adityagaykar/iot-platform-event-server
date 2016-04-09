@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+	h3 Callbacks
+	hr
+	div.col-md-12
+		h4 Add Callback
+		div.col-md-6
+			form(method="POST", action="/callbacks")
+				div.form-group
+					label(for="name") Name:
+					input.form-control(required="required",type="text", name="name")				
+				div.form-group
+					label(for="callback") Callback:
+					input.form-control(type="text",name="callback", required="required")
+				div.form-group
+					label(for="callback") Uri: 
+					input.form-control(type="text",name="uri", required="required")
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")		
+					input(type="hidden", name="app_id", value="#{app_id}")
+block inPageScript
+	script.
+		

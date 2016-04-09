@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+	h3 Logic servers
+	hr
+	div.col-md-12
+		h4 Edit Logic server
+		div.col-md-6
+			form(method="POST", action="/logicservers/update/#{id}")
+				div.form-group
+					label(for="name") Name:
+					input.form-control(required="required",type="text", name="name", value="#{name}")				
+				div.form-group
+					label(for="hostname") Callback: 
+					input.form-control(required="required",type="text", name="hostname", value="#{hostname}")
+				div.form-group
+					label(for="Port") Port: 
+					input.form-control(required="required",type="text", name="port", value="#{port}")		
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Update")
+					input(type="hidden", name="app_id", value="#{app_id}")
+		
+block inPageScript
+	script.
+		
