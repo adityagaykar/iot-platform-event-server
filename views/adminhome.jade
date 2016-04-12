@@ -1,0 +1,52 @@
+extends layout
+
+block content
+	if user
+		h3 Welcome, #{user.name}	
+	hr
+
+	div.row
+		div.col-md-4
+			h4 Gateway Types
+			div.col-md-6
+				table.table
+					tr
+						th Name
+						th Owner Id
+						th  
+					- each variable,i in types
+						tr
+							td #{variable.name}
+							td #{variable.owner}
+							td
+								a(href="/gatewaytypes/delete/#{variable._id}") Delete
+		div.col-md-2				
+			a.btn.btn-primary(href="/gatewaytypes/add") Add
+	div.row
+		div.col-md-4
+			h4 Gateways		
+			div.col-md-6
+				table.table
+					tr
+						th Name
+						th Owner Id
+						th Type
+						th Dataset
+						th  
+					- each variable,i in gateways
+						tr
+							td #{variable.name}
+							td #{variable.owner}
+							td #{variable.type}
+							td #{JSON.stringify(variable.dataset)}										
+							td
+								a(href="/gateways/delete/#{variable._id}") Delete
+		div.col-md-2				
+			a.btn.btn-primary(href="/gateways/add") Add
+			
+
+
+		
+block inPageScript
+	script.
+		

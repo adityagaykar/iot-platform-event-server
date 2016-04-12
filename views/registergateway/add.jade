@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+	h3 Add Gateways
+	hr
+	div.col-md-12
+		h4 Add Dataset
+		div.col-md-6
+			form(method="POST", action="/registergateways")				
+				div.form-group
+					label(for="name") Available gateways:
+					select.form-control(required="required", name="gateways", multiple="multiple")
+						- each variable,i in gateways
+							option(value="#{variable._id}") #{variable.name}				
+				div.col-md-offset-5
+					input.btn.btn-success(required="required",type="submit", value="Submit")
+					input(type="hidden", name="app_id", value="#{app_id}")
+		
+block inPageScript	
+		

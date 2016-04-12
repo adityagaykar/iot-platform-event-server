@@ -5,36 +5,37 @@ var Http = require("http");
 var requestify = require('requestify');
 var mongoose = require('mongoose');
 var Dataset = mongoose.model("dataset");
-var Callback = mongoose.model("callback");
 
 
 var helper = {
-	executeRule : function(fact,params){
+	executeRule : function(fact,params,dataset){
 		var rule_template = '[{ "condition": function(R) { R.when(this && ('+params[0]+')); }, "consequence": function(R) { this.result = [false,"'+params[1]+'"]; R.stop(); } }];';
 		var rules = eval("x = "+rule_template);		
 		var R = new RuleEngine(rules);		
 		var rule_result = "";
-		console.log("> "+JSON.stringify(fact));
+		
 		//Now pass the fact on to the rule engine for results
 		rule_result = R.execute(fact,function(result){ 
-			console.log("RE : "+result.result[1]);		
+			//console.log("RE : "+result.result[1]+" : "+JSON.stringify(fact));		
 			if(result.result != true){
+				console.log("RE2 : "+JSON.stringify(fact));
 				//send callback function to Logic server				
-				Callback.findOne({name: result.result[1]},function(err, data){
-					if(err)
-						console.log("callback to logicserver : error");
-					else{
-						console.log(data);
-						requestify.post(data.uri, {
-						    callback: data.callback
-						})
-						.then(function(response) {
-						    // Get the response body (JSON parsed or jQuery object for XMLs)
-						    console.log(">"+response.getBody());
-						});	
-					}					
-					//Also need to save data for analytics below here...				
-				});
+				// Callback.findOne({name: result.result[1]},function(err, data){
+				// 	if(err)
+				// 		console.log("callback to logicserver : error");
+				// 	else{
+				// 		//console.log(data);
+				// 		requestify.post(data.uri, {
+				// 		    callback: data.callback,
+				// 		    sensor_data: dataset
+				// 		})
+				// 		.then(function(response) {
+				// 		    // Get the response body (JSON parsed or jQuery object for XMLs)
+				// 		    console.log(">"+response.getBody());
+				// 		});	
+				// 	}					
+				// 	//Also need to save data for analytics below here...				
+				// });
 				
 				
 			}

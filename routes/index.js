@@ -4,6 +4,9 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var sha1 = require('sha1');
 var Application = mongoose.model("applications");
+var Gateway = mongoose.model("gateway");
+var GatewayType = mongoose.model("gatewayType");
+
 /* GET login page. */
 router.get('/', function(req, res, next) {
 	var user = req.session.user;
@@ -38,15 +41,38 @@ router.post('/signup',function(req,res, next){
 	});
 
 });
-/*GET:Home page*/
 
-router.get('/home',function(req,res,next){
+/*GET Admin home page*/
+router.get('/adminhome',function(req,res,next){
 	var user = req.session.user;
 	if(user){
+		if(user.name == "admin"){
+			GatewayType.find({},function(err,types){
+				Gateway.find({},function(err, data){
+					res.render("adminhome",{user: user, gateways: data, types : types});	
+				});	
+			});						
+		} else {
+			res.redirect("/home");
+		}
+	} else {
+		req.session.error = "Please login";
+		res.redirect("/");
+	}
+});
+
+
+/*GET:Home page*/
+router.get('/home',function(req,res,next){
+	var user = req.session.user;
+	if(user && user.name == "admin")
+		res.redirect("/adminhome");
+	else if(user){
 		User.findOne({name:user.name, password:user.password},function(err,user){
 			if (err)
 				throw err;
 			if (user){
+
 				Application.find({owner : user._id},function(err, data){				
 					res.render("home",{user : user, applications : data});
 				});
@@ -61,9 +87,13 @@ router.get('/home',function(req,res,next){
 	}
 });
 
-/*  */
+/* login */
 router.get('/login', function(req, res, next) {
-	res.redirect("/home");
+	var user = req.session.user;
+	if(user.name == "admin")
+		res.redirect("/adminhome");
+	else
+		res.redirect("/home");
 });
 
 /* POST: login */
@@ -78,7 +108,10 @@ router.post('/login',function(req,res, next){
 			throw err;
 		if (user){
 			req.session.user = user;
-			res.redirect("/home");
+			if(user.name == "admin")
+				res.redirect("/admin_home");
+			else
+				res.redirect("/home");
 		} else {
 			req.session.error = "Invalid Username";
 			res.redirect("/");

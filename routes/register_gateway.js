@@ -2,90 +2,85 @@ var express = require('express');
 var sha1 = require('sha1');
 var router = express.Router();
 var mongoose = require('mongoose');
-var Dataset = mongoose.model("dataset");
-var Rule = mongoose.model("rule");
+var Gateway = mongoose.model("gateway");
+var GatewayType = mongoose.model("gatewayType");
+var RegisterGateway = mongoose.model("registerGateway");
 
-//GET rule
-router.get("/:id",function(req, res, next){
+//GET datasets
+router.get("/view/:id",function(req, res, next){
 	var app_id = req.params.id;
-	Rule.find({app_id: app_id},function(err, data){
-		res.render("rules/view",{rules : data});
+	RegisterGateway.find({app_id: app_id},function(err, data){
+		res.render("registergateway/view",{gateways : data});
 	});
 });
 
-//Add rule
+//Add view
 router.get("/add/:id",function(req,res,next){
 	var app_id = req.params.id;
-	res.render("rules/add",{app_id : app_id});
+	Gateway.find({},function(err, data){
+		res.render("registergateway/add",{app_id : app_id, gateways : data});	
+	});
+	
 });
 
-//POST rule
+//POST Dataset
 router.post("/", function(req, res, next){
-	var name = req.body.name;	
+	var gateways = req.body.gateways;	
 	var owner = req.session.user._id;	
-	var callback = req.body.callback;
-	var uri = req.body.uri;
 	var app_id = req.body.app_id;
-	var sensor_type = req.body.sensor_type;
-
-	Rule.find({name: name}, function(err, data){
-		if(data.length != 0){
-			res.redirect("/rules/add/"+app_id);
-		} else {
-			Rule.create({
-				name : name,
+	//res.send(JSON.stringify(gateways));
+	RegisterGateway.remove({app_id: app_id}, function(err,data){
+		RegisterGateway.create({
 				owner : owner,
-				callback : callback,
-				uri : uri,
-				app_id : app_id,
-				sensor_type : sensor_type
-			}, function(err, rule){
+				gateways : gateways,
+				app_id : app_id,				
+		}, function(err, data){
 				if( err)
 					res.send(err);
-				else
-					res.redirect("/rules/"+rule.app_id);			
-			});		
-		}
-	});
+				res.redirect("/applications/home/"+data.app_id);			
+		});
+	});	
 });
 	
 
-//GET edit rule
+//GET edit Dataset
 router.get("/update/:id", function(req, res, next){
 	var id = req.params.id;
 
 	Rule.findOne({_id: id},function(err, rule){
-		res.render("rules/edit", {name: rule.name,uri: rule.uri, sensor_type: rule.sensor_type,callback: rule.callback, id: rule._id, app_id: rule.app_id});
+		res.render("rules/edit", {name: rule.name, sensors: rule.sensors.join(","),callback: rule.callback, condition: rule.condition, id: rule._id, app_id: rule.app_id});
 	});	
 });
 
 
-//POST update rule
+//POST update dataset
 router.post("/update/:id", function(req, res, next){
 	var id = req.params.id;
 	var name = req.body.name;
 	var owner = req.session.user._id;
-	var uri = req.body.uri;
+	var condition = req.body.condition;
 	var callback = req.body.callback;
 	var app_id = req.body.app_id;
 	var sensor_type = req.body.sensor_type;
 	console.log("App_id : "+app_id);
+	var sensors = req.body.sensors.split(",");
 	Rule.update({_id: id},{
 		name : name,
 		owner : owner,
 		callback : callback,
+		condition : condition,
 		app_id : app_id,
-		uri: uri,
 		sensor_type : sensor_type
 	}, function(err, curr_rule){
 		if( err)
 			res.send(err);							
 	});
 	res.redirect("/rules/"+app_id);
+
 });
 
 
-//DELETE rule
+//DELETE Dataset
 
 router.get("/delete/:id",function(req, res, next){
 	var id = req.params.id;

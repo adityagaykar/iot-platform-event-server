@@ -2,6 +2,9 @@ extends landing
 
 block content
     div.col-md-12
+        hr
+        h4 Log in
+        hr
         form#formLogin(method="POST", action="/login")
             div.form-group
                 label(for="username") Username: 
@@ -9,9 +12,9 @@ block content
             div.form-group
                 label(for="password") Password: 
                 input#inputPassword.form-control(type="password", name="password",required="required")
-            div.col-md-offset-5
+            div.col-md-offset-2
                 div.col-md-6
                     input.btn.btn-success(required="required",type="submit", value="Log In")
                 div.col-md-6
-                    a.btn.btn-success(href="/signup") signup
+                    a.btn.btn-success(href="/signup") Sign up
 

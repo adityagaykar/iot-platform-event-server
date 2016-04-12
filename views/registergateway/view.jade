@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+	div.col-md-12
+		h4 View Gateways
+		div.col-md-6
+			table.table
+				tr					
+					th Owner Id
+					th Application Id
+					th Gateways
+					th  
+				- each variable,i in gateways
+					tr						
+						td #{variable.owner}
+						td #{variable.app_id}
+						td #{variable.gateways}										
+						td
+							a(href="/registergateways/delete/#{variable._id}") Delete
+
+		
+block inPageScript
+	script.
+		
+		

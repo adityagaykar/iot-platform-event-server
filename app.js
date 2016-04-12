@@ -30,9 +30,13 @@ var datasetModel = require('./models/dataset');
 // datasetModel.methods(['get','post','put','delete']);
 // datasetModel.register(app,'/datasets');
 var ruleModel = require('./models/rules')
-var callbackModel = require('./models/callbacks')
 var logicserverModel = require('./models/logicserver')
 var applicationModel = require('./models/applications');
+var applicationModel = require('./models/applications');
+var gatewayModel = require('./models/gateway');
+var gatewayTypeModel = require('./models/gateway_type');
+var registerGatewayModel = require('./models/register_gateway');
+var appUserModel = require('./models/app_users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +52,6 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(methodOverride());
 
 // We use mongodb to store session info
 // expiration of the session is set to 7 days (ttl option)
@@ -75,19 +78,26 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var datasets = require('./routes/dataset');
 var rules = require('./routes/rules');
-var callbacks = require('./routes/callbacks');
 var logicserver = require('./routes/logicserver');
-var feed = require('./routes/feed');
 var applications = require('./routes/applications');
+var gateways = require('./routes/gateway');
+var gatewaytype = require('./routes/gateway_type');
+var registerGateway = require('./routes/register_gateway');
+var api = require('./routes/api');
+
+
 app.use('/', routes);
 app.use('/users', users);
 app.use('/datasets', datasets);
 app.use('/rules',rules);
-app.use('/api',feed);
-app.use('/callbacks',callbacks);
+app.use('/api',api);
 app.use('/logicservers',logicserver);
 app.use('/applications',applications);
 app.use('/signup',applications);
+app.use('/gateways',gateways);
+app.use('/gatewaytypes',gatewaytype);
+app.use('/registergateways',registerGateway);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

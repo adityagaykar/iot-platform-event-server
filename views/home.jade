@@ -10,13 +10,12 @@ block content
 			table.table
 				tr
 					th Name
-					th Owner Id
-					th  
+					th Registration Key
 					th  
 				- each variable,i in applications
 					tr
 						td #{variable.name}
-						td #{variable.owner}
+						td #{variable.registration_key}
 						td
 							a(href="/applications/delete/#{variable._id}") Delete
 						td

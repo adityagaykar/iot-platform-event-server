@@ -3,41 +3,25 @@ var sha1 = require('sha1');
 var router = express.Router();
 var mongoose = require('mongoose');
 var Dataset = mongoose.model("dataset");
-var Application = mongoose.model("applications");
-var hat = require('hat');
-//GET datasets
-router.get("/home/:id",function(req, res, next){
-	Application.find(function(err, data){
-		var _id = req.params.id;
-		res.render("application/app_home",{user : req.session.user, id : _id});
-	});
-});
-
-//View Application user
-
-router.get("/:id/users",function(req,res,next){
-
-});
+var GatewayType = mongoose.model("gatewayType");
 
 //Add view
 router.get("/add",function(req,res,next){
-	res.render("application/add");
+	
+	res.render("gatewaytype/add");
 });
 
 //POST Dataset
 router.post("/", function(req, res, next){
 	var name = req.body.name;
 	var owner = req.session.user._id;
-
-	Application.create({
+	GatewayType.create({
 		name : name,
 		owner : owner,
-		registration_key: hat(),
-		users : []
 	}, function(err, dataset){
 		if( err)
 			res.send(err);
-		res.redirect("/home");
+		res.redirect("/adminhome");
 	})
 });
 
@@ -47,8 +31,8 @@ router.post("/", function(req, res, next){
 router.get("/delete/:id",function(req, res, next){
 	var id = req.params.id;
 	console.log(id);
-	Application.remove({_id: id}).exec();	
-	res.redirect("/applications");
+	GatewayType.remove({_id: id}).exec();	
+	res.redirect("/adminhome");
 });
 
 module.exports = router;

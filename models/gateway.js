@@ -1,12 +1,12 @@
 var mongoose = require("mongoose");
 var schema = mongoose.Schema;
 
-var applicationSchema = new schema({
+var gatewaySchema = new schema({
 	name: {type: String, required: true, index: {unique: true}},
 	owner: {type: String, required: true},
-	registration_key: {type: String, required: true},
-	users: {type: Array},
+	dataset : {type: Object, required: false},
+	type : {type: String, required: true},
 	created_on: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model("applications",applicationSchema);
+module.exports = mongoose.model("gateway",gatewaySchema);

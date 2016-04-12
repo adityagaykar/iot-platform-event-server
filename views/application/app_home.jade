@@ -9,9 +9,9 @@ block content
 		h4 Gateways
 		ul.list-group
 			li.list-group-item
-				a(href="/datasets/add/#{id}") Add
+				a(href="/registergateways/add/#{id}") Add
 			li.list-group-item
-				a(href="/datasets/#{id}") View All
+				a(href="/registergateways/view/#{id}") View All
 			
 		h4 Rules
 		ul.list-group
@@ -20,20 +20,10 @@ block content
 			li.list-group-item
 				a(href="/rules/#{id}") View All
 
-		h4 Callbacks
-		ul.list-group
+		h4 App Users
+		ul.list-group			
 			li.list-group-item
-				a(href="/callbacks/add/#{id}") Add
-			li.list-group-item
-				a(href="/callbacks/#{id}") View All
-
-		//		
-			h4 Logic Server
-			ul.list-group
-				li.list-group-item
-					a(href="/logicservers/add/#{id}") Add
-				li.list-group-item
-					a(href="/logicservers/#{id}") View All
+				a(href="/applications/#{id}/users") View All
 		
 block inPageScript
 	script.
