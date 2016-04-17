@@ -1,0 +1,14 @@
+extends landing
+
+block content
+    div.col-md-12
+        form#formLogin(method="POST", action="/signup")
+            div.form-group
+                label(for="username") Username: 
+                input#inputUsername.form-control(required="required",type="text", name="username")
+            div.form-group
+                label(for="password") Password: 
+                input#inputPassword.form-control(type="password", name="password",required="required")
+            div.col-md-offset-5
+                input.btn.btn-success(required="required",type="submit", value="signup")            
+
