@@ -66,12 +66,43 @@ router.post("/v1.0/event",function(req,res,next){
 							//do nothing
 						});	
 						//store event info in dataset
+						Dataset.findOne({rule_id: rule.rule_id, access_token: rule.access_token}, function(err, dataset){
+							if(dataset){
+								var new_dataset = dataset.dataset;
+								new_dataset.push({value: sensor_value, time_stamp: curr.getTime()});
+								Dataset.update({rule_id: rule.rule_id, access_token: rule.access_token},
+								{
+									dataset : new_dataset
+								},function(err, update_dataset){
+									//updated;
+									if(err)
+										console.log(err);
+									else
+										console.log(">>>Dataset : UPDATED");
+								});
+							} else {
+								Dataset.create({
+									name: rule.rule_id+"_"+rule.access_token,
+									rule_id : rule.rule_id,
+									rule_name: rule.name,
+									access_token : rule.access_token,
+									dataset : [{value : sensor_value, time_stamp: curr.getTime()}]
+								},function(err,data){
+									//created
+									if(err)
+										console.log(err);
+									else
+										console.log(">>>Dataset : INSERTED");
+								});
+							}
+						});
 						//forward packet to logic server
 						Rule.findOne({_id: rule.rule_id},function(err, app_rule){
 							console.log("Sending request ...");
 							requestify.post("http://"+logic_server.hostname+":"+logic_server.port+"/api/v1.0/callback", {
 							    callback: app_rule.uri,
-							    sensor_data: js_code
+							    sensor_data: js_code,
+							    access_token: rule.access_token
 							})
 							.then(function(response) {
 							    // Get the response body (JSON parsed or jQuery object for XMLs)
