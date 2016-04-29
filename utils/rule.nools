@@ -1,0 +1,45 @@
+rule during12to10 {
+    when {
+        c: Clock c.getHours()>=12 && c.getHours()<=24;
+        m: Message
+    }
+    then {console.log("All cars with lowcharge:: timing 12pm to 22pm"+m.latitude);
+        lowcharge(m);
+    }
+}
+rule during6to12 {
+    when {
+        c: Clock c.hoursIsBetween(6,12);
+    }
+    then {console.log("pp");
+        console.log("Good Morning Car");
+    }
+}
+
+rule findnearcar {
+    when {
+        c: Clock c.hoursIsBetween(20,22);
+        m: Message m.charge<20;
+    }
+    then {console.log("pp");
+        nearest(m);
+    }
+}
+
+rule low_charge{
+   when {
+        m: Message m.charge<40;
+    }
+    then {console.log("Your car is running on low charge");
+        find_nearest(m);
+    } 
+}
+
+
+rule time
+{
+    when{
+    c: Clock 1;
+    }
+    then{console.log(c.getHours());}
+}

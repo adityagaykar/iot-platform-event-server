@@ -7,17 +7,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require("express-session"),
  MongoStore = require("connect-mongo")(session);
+var servers = require('./utils/servers');
+var db_server = servers.db_server;
 
 var app = express();
 
 //connect to db
 var mongoose = require("mongoose")
-mongoose.connect("mongodb://localhost/iotdb", function(err){
+mongoose.connect("mongodb://"+db_server.hostname+"/iotdb", function(err){
   if(err)
     throw err;  
     console.log("Connected to mongodb")
 });
-
 //wire-in the models
 
 //user model
@@ -38,6 +39,7 @@ var sensorTypeModel = require('./models/sensor_type');
 var registerGatewayModel = require('./models/register_gateway');
 var appUserModel = require('./models/app_users');
 var userRuleModel = require('./models/user_rule');
+var eventDumpModel = require('./models/eventdump');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -83,6 +85,7 @@ app.use(methodOverride(function(req, res){
 // var gatewaytype = require('./routes/gateway_type');
 // var sensortype = require('./routes/sensor_type');
 // var registerGateway = require('./routes/register_gateway');
+var fetch = require('./utils/fetch');
 var api = require('./routes/api');
 
 
